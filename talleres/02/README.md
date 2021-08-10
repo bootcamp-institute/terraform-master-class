@@ -101,7 +101,7 @@ terraform init
   ```
 </details>
 
-Explicación:
+**Explicación:**
 
 1. Agregamos un bloque de tipo `provider` cuya etiqueta es `"aws"`. Esto indica a Terraform que vamos a necesitar que descargue el plugin de AWS
 2. Utilizamos el atributo `region` para configurar el proveedor con la región _N. Virginia_. Cada proveedor tiene diferentes atributos, puedes revisar la documentación de cada proveedor en [registry.terraform.io](https://registry.terraform.io/browse/providers).
@@ -148,7 +148,7 @@ terraform init
   ```
 </details>
 
-Explicación:
+**Explicación:**
 
 1. Usamos el atributo `required_providers` que es un bloque anidado dentro del bloque `terraform`. En este bloque configuramos la versión de `aws` con una cadena como en `required_version`.
 2. Al ejecutar `terraform init` obtenemos un error ya que el archivo `.terraform.lock.hcl` guarda información que esta configuración ya fue inicializada con otra versión. Si queremos actualizar la versión del plugin para cumplir con las restricciones impuestas en `required_providers`, debemos hacerlo con:
@@ -292,7 +292,7 @@ Escribe la palabra `yes` y da _Enter_ para confirmar la creación del recurso.
   ```
 </details>
 
-Explicación:
+**Explicación:**
 
 1. Creamos un archivo de configuración resource.tf con la definición de un recurso S3:
     - El bloque es de tipo `resource`
@@ -379,7 +379,7 @@ terraform apply "out.tfplan"
   ```
 </details>
 
-Explicación:
+**Explicación:**
 
 1. Modificamos el archivo de configuración para agregar el atributo `tags` a nuestro bucket
 2. Ejecutamos el comando `plan` pero en esta ocasión guardamos la salida en un archivo llamado `out.tfplan`
@@ -466,7 +466,7 @@ Escribe la palabra `yes` y da _Enter_ para confirmar la eliminación del recurso
   ```
 </details>
 
-Explicación:
+**Explicación:**
 
 1. Utilizamos el comando `plan` para verificar las acciones que realizará el comando `destroy`
 2. Ejecutamos el comando `destroy` para eliminar todos los recursos definidos en los archivos de configuración. Este comando es un alias para `terraform apply -destroy`. Nos pide nuestra confirmación pero podemos saltar esta confirmación si corremos con la opción `terraform destroy -auto-approve`. 

@@ -132,17 +132,19 @@ Do you want to copy existing state to the new backend?
   configured "s3" backend. Do you want to copy this state to the new "s3"
   backend? Enter "yes" to copy and "no" to start with an empty state.
 
-  Enter a value: 
+  Enter a value:
 ```
 
 Responde `yes` y da _Enter_
 
-Explicación:
+**Explicación:**
 
 1. Creamos una configuración sin definición de _backend_ y aplicamos los cambios. Por default, estamos ocupando el _backend_ local con el archivo `terraform.tfstate`
 2. Incluimos la configuración de _backend_ en el bloque `terraform` y ejecutamos el comando `init`:
-  - Terraform detecta que tenímos un archivo local y nos pregunta si queremos migrarlo
-  - Al contestar que sí, Terraform sube el archivo al bucket de S3 y a partir de ahora guardará los cambios en esta locación remota
+
+- Terraform detecta que tenímos un archivo local y nos pregunta si queremos migrarlo
+- Al contestar que sí, Terraform sube el archivo al bucket de S3 y a partir de ahora guardará los cambios en esta locación remota
+
 3. Validamos que el archivo de estado se encuentra en el bucket de S3
 
 Ahora veremos que sucede si revertimos la configuración:
@@ -176,7 +178,7 @@ Do you want to copy existing state to the new backend?
   configured "local" backend. Do you want to copy this state to the new "local"
   backend? Enter "yes" to copy and "no" to start with an empty state.
 
-  Enter a value: 
+  Enter a value:
 ```
 
 Responde `yes` y da _Enter_
@@ -194,7 +196,8 @@ Es posible declarar la configuración de `backend` sin describir todos sus atrib
 
 Experimentaremos con el atributo `key` de la configuración de _backend_, para eso lo borramos de nuestro archivo `main.tf`:
 
-```tf
+```sh
+cat << EOF > main.tf
 terraform {
   required_version = "~> 1.0"
 
@@ -206,7 +209,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "terraform-masterclass-7nr7mnz6"
+    bucket = "$BUCKET_NAME"
     region = "us-east-1"
   }
 }
@@ -214,6 +217,7 @@ terraform {
 provider "aws" {
   region = "us-east-1"
 }
+EOF
 ```
 
 Si intentamos hacer un `init` recibimos un error
@@ -226,9 +230,9 @@ terraform init
 Initializing the backend...
 ╷
 │ Error: Backend configuration changed
-│ 
+│
 │ A change in the backend configuration has been detected, which may require migrating existing state.
-│ 
+│
 │ If you wish to attempt automatic migration of the state, use "terraform init -migrate-state".
 │ If you wish to store the current configuration with no changes to the state, use "terraform init -reconfigure".
 ```
@@ -246,7 +250,7 @@ Initializing the backend...
 key
   The path to the state file inside the bucket
 
-  Enter a value: 
+  Enter a value:
 ```
 
 Contestamos con el valor: `05/networking/terraform.tfstate`. Ejecuta el comando `plan` para validar que sigue accediendo al archivo de estado correcto.
@@ -254,7 +258,7 @@ Contestamos con el valor: `05/networking/terraform.tfstate`. Ejecuta el comando 
 Podemos ocupar la **opción del comando** init `-backend-config="KEY=VALUE"` para configurar un atributo parcial de _backend_:
 
 ```sh
-tf init -reconfigure -backend-config="key=05/networking-test/terraform.tfstate"
+terraform init -reconfigure -backend-config="key=05/networking-test/terraform.tfstate"
 ```
 
 Si ejecutamos un comando `plan`, recibimos como salida: `Plan: 2 to add, 0 to change, 0 to destroy.`. Esto es porque ahora apuntamos a una ruta diferente para el archivo de estado donde no existe nada.
@@ -374,14 +378,13 @@ terraform plan -out=out.tfplan
 terraform apply "out.tfplan"
 ```
 
-Explicación:
+**Explicación:**
 
 1. Empezamos creando un bloque _output_ en la configuración de _networking_. Esta variable de salida guarda el ID del Security Group y podremos acceder a ella a través de un _data source_
 2. Creamos una configuración nueva para un servidor que usará el Security Group de la configuración de _networking_
 3. Utilizamos el _data source_ `terraform_remote_state` para obtener datos de un estado remoto. La configuración es similar a la realizada en el _backend_ de _networking_
 4. En el recurso del servidor ocupamos la dirección de recurso `data.terraform_remote_state.networking.outputs.sg_id` para acceder al ID del Security Group.
 5. Validamos que el servidor fue creado con el Security Group esperado
-
 
 ### Administrar estado a través de la línea de comandos
 
@@ -735,7 +738,7 @@ terraform state rm aws_instance.web_server
 Si ejecutamos un `plan` nos damos cuenta que Terraform ya no hace seguimiento del servidor creado anteriormente
 
 ```sh
-terraform plan`
+terraform plan
 ```
 
 <details>

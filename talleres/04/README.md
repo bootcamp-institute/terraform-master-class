@@ -237,7 +237,7 @@ Do you want to perform these actions?
 
 Escribe la palabra `yes` y da _Enter_ para confirmar la creación del recurso.
 
-Explicación:
+**Explicación:**
 
 1. Creamos tres bloques de tipo `variable` para el `ami_id`, `instance_type` y `name` en el archivo `variales.tf` (no importa el nombre del archivo donde viven)
 2. Ya que `ami_id` tiene un valor por default, no es necesario pasar un valor en tiempo de planeación o ejecución
@@ -304,13 +304,12 @@ terraform apply "out.tfplan"
   ```
 </details>
 
-Explicación:
+**Explicación:**
 
 1. Establecimos variables de ambiente con el prefijo `TF_VAR` seguido de un `_` y el nombre de la variable a la que queremos establecer el valor (`instance_type` y `name`)
 2. Ejecutamos un comando `plan` y con la bandera `input=false` para asegurarnos de que falle en caso de que hayamos olvidado establecer el valor de una variable. Y guardamos el plan en el archivo `out.tfplan`
 3. Aplicamos los cambios guardados en el archivo de plan
 4. Validamos los cambios en la consola de EC2
-
 
 ##### Ejercicio
 
@@ -325,7 +324,6 @@ Investiga el valor del AMI de Ubuntu para la región _us-east-1_ y establece el 
   ```
   Las variables de entorno toman precedencia sobre los valores por default.
 </details>
-
 
 ##### Limpieza
 
@@ -409,7 +407,7 @@ terraform apply "out.tfplan"
   ```
 </details>
 
-Explicación:
+**Explicación:**
 
 1. Creamos un archivo `terraform.tfvars` con el valor de la variable `instance_type`. Este archivo es cargado automáticamente por Terraform
 2. Ejecutamos el comando `apply` con la opción `-input=false` para forzar un error en caso de que falte una variable
@@ -444,7 +442,7 @@ terraform apply "out.tfplan"
   ```
 </details>
 
-Explicación:
+**Explicación:**
 
 1. Los comandos `plan` y `apply` soportan la opción `-var` para recibir los valores de variables. El formato es: `-var nombre_de_variable="valor_de_variable`
 2. Ejecutamos los cambios
@@ -503,12 +501,13 @@ terraform plan -var name="workshop4-data" -out=out.tfplan
 terraform apply "out.tfplan"
 ```
 
-Explicación:
+**Explicación:**
 
 1. Creamos un archivo `data.tf` (el nombre no es importante) para alojar nuestras configuraciones de _data sources_
 2. Los _data sources_ ocupan un bloque llamado `data`, la primer etiqueta `"aws_ami"` indica el tipo de consulta que vamos a hacer al recurso del proveedor, y la segunda etiqueta `"amazon_linux_2"` es un nombre local que ocuparemos para hacer referencia a los datos del recurso
 3. Para ocupar el resultado del _data source_, hacemos referencia a su dirección de recurso iniciando con la palabra `data`:
-  - Para nuestro _data source_ la dirección es `data.aws_ami.amazon_linux_2` y ocupamos su atributo id de la siguiente forma: `data.aws_ami.amazon_linux_2.id`
+
+- Para nuestro _data source_ la dirección es `data.aws_ami.amazon_linux_2` y ocupamos su atributo id de la siguiente forma: `data.aws_ami.amazon_linux_2.id`
 
 ### Obtener atributos de recursos a través de outputs
 
@@ -584,7 +583,7 @@ terraform output -raw server_public_ip
   ```
 </details>
 
-Explicación:
+**Explicación:**
 
 1. Los bloques `output` en el módulo raíz, sirven para exponer información de nuestros recursos a través del archivo de estado y podemos consultarlo con la CLI de Terraform.
 2. Es necesario aplicar los cambios para obtener los resultados del bloque `output`
@@ -595,7 +594,7 @@ Explicación:
 Destruye toda la infraestructura con el comando:
 
 ```sh
-tf destroy -var-file=myvars.tfvars -auto-approve
+terraform destroy -var-file=myvars.tfvars -auto-approve
 ```
 
 ## Ejercicio
@@ -605,7 +604,6 @@ tf destroy -var-file=myvars.tfvars -auto-approve
 3. Ocupa un _data source_ para obtener el security group `default` de la VPC `default` y ocupa el ID en el servidor
 4. Crea los recursos y valida que el servidor se crea en la región y con el security group elegidos
 5. Destruye los recursos con el comando `destroy`
-
 
 ## Conclusión
 

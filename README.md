@@ -4,7 +4,6 @@ Este repositorio contiene los talleres para el Master Class de Terraform de Boot
 
 Los talleres crean recursos en AWS, en su mayoría dentro de la capa gratuita. Pero es importante **borrar todos los recursos** al terminar cada taller para no incurrir en gastos innecesarios.
 
-
 ## Instrucciones
 
 Empieza creando un ambiente de Cloud9:
@@ -15,12 +14,6 @@ Empieza creando un ambiente de Cloud9:
 4. En `Name` llenar con `Terraform Master Class`. Click en `Next step`
 5. En la página de configuración de ambiente, dejar todas las opciones con sus valores por default. Click en `Next step`
 6. En la página de revisión, click en `Create environment`.
-
-Una vez creado el IDE Cloud9, clonar este repositorio:
-
-```sh
-git clone https://github.com/eloyvega/bootcamp-terraform-masterclass.git
-```
 
 Sigue las instrucciones de cada taller
 
@@ -35,6 +28,6 @@ Sigue las instrucciones de cada taller
 7. [Creando configuraciones reutilizables con módulos](./talleres/07)
 8. [Creando una VPC con el registro público de módulos](./talleres/08)
 9. [Importando recursos de AWS](./talleres/09)
-10. [Bootstrap de instancias con información dinámica](./talleres/10)
-11. [Creación repetida de recursos](./talleres/11)
+10. [Provisioners](./talleres/10)
+11. [Meta-argumentos, expresiones y funciones](./talleres/11)
 12. [Introducción a Terraform Cloud](./talleres/12)

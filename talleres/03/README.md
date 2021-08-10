@@ -88,14 +88,15 @@ terraform apply "out.tfplan"
   ```
 </details>
 
-Explicación:
+**Explicación:**
 
 1. El recurso [aws_default_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/default_vpc) es de un tipo especial y sirve para hacer referencia a la VPC por default de la región _us-east-1_ de nuestra cuenta de AWS.
 2. Creamos un servidor de EC2 ocupando el recurso [aws_instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance#vpc_security_group_ids) definiendo la AMI (Amazon Machine Image), tipo de instancia y Security Group que va a utilizar
-  - En el atributo `vpc_security_group_ids` utilizamos la sintaxis para hacer referencia a otro recurso creado en esta configuración. Esto se conoce como _resource address_: `aws_security_group.allow_http.id`
-  - Esta referencia crea una dependencia implícita, por lo cual Terraform va a crear primero el Security Group y después la instancia
-3. El recurso [aws_security_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group#attributes-reference) crea un Security Group con una regla para permitir el acceso a través del puerto 80 desde todo el internet
 
+- En el atributo `vpc_security_group_ids` utilizamos la sintaxis para hacer referencia a otro recurso creado en esta configuración. Esto se conoce como _resource address_: `aws_security_group.allow_http.id`
+- Esta referencia crea una dependencia implícita, por lo cual Terraform va a crear primero el Security Group y después la instancia
+
+3. El recurso [aws_security_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group#attributes-reference) crea un Security Group con una regla para permitir el acceso a través del puerto 80 desde todo el internet
 
 #### Ejercicio
 
@@ -112,41 +113,43 @@ Utiliza la documentación de Terraform para la instancia de EC2 y Security Group
 resource "aws_default_vpc" "default" {}
 
 resource "aws_instance" "server" {
-  ami                    = "ami-0dc2d3e4c0f9ebd18"
-  instance_type          = "t3.micro"
-  vpc_security_group_ids = [aws_security_group.allow_http.id]
+ami = "ami-0dc2d3e4c0f9ebd18"
+instance_type = "t3.micro"
+vpc_security_group_ids = [aws_security_group.allow_http.id]
 
-  tags = {
-    Name = "Terraform MC"
-  }
+tags = {
+Name = "Terraform MC"
+}
 }
 
 resource "aws_security_group" "allow_http" {
-  vpc_id = aws_default_vpc.default.id
+vpc_id = aws_default_vpc.default.id
 
-  ingress {
-    description = "HTTP traffic"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "SSH traffic"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+ingress {
+description = "HTTP traffic"
+from_port = 80
+to_port = 80
+protocol = "tcp"
+cidr_blocks = ["0.0.0.0/0"]
 }
-  ```
-  
+
+ingress {
+description = "SSH traffic"
+from_port = 22
+to_port = 22
+protocol = "tcp"
+cidr_blocks = ["0.0.0.0/0"]
+}
+}
+
+````
+
 Para actualizar los recursos, ejecuta el comando:
 
 ```sh
 terraform apply -auto-approve
-```
+````
+
 </details>
 
 ### Crear recursos con dependencias explícitas
@@ -190,7 +193,7 @@ terraform apply "out.tfplan"
   ```
 </details>
 
-Explicación:
+**Explicación:**
 
 1. Creamos dos recursos de tipo [aws_s3_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) y [aws_instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance). Normalmente estos recursos se podrían crear en paralelo ya que no tienen ninguna dependencia
 2. Agregamos el meta-argumento [depends_on](https://www.terraform.io/docs/language/meta-arguments/depends_on.html) al servidor EC2 para indicar a Terraform que existe una dependencia y debe crear primero el bucket S3. De lo contrario nuestra aplicación fallaría al ejecutarse
@@ -215,7 +218,6 @@ terraform validate
     Success! The configuration is valid.
   ```
 </details>
-
 
 Si queremos obtener una salida en formato JSON que podría ser analizado por otro sistema automatizado, ocupamos la opción `-json`:
 
@@ -259,7 +261,7 @@ Env = "development"
 }
 ```
 
-Este bloque es totalmente válido y Terraform puede crear el servidor a partir de esta configuración. Sin embargo no es fácil de leer debido a que no tiene el formato estándar. 
+Este bloque es totalmente válido y Terraform puede crear el servidor a partir de esta configuración. Sin embargo no es fácil de leer debido a que no tiene el formato estándar.
 
 Con el siguiente comando podemos validar si nuestros archivos tienen el formato adecuado pero sin alterar aquellos que no lo estén:
 
