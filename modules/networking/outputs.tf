@@ -11,9 +11,10 @@ output "lb_info" {
 
 output "security_groups" {
   value = {
-    http_external = aws_security_group.http_external.id
-    http_internal = aws_security_group.http_internal.id
-    ssh_internal  = aws_security_group.ssh_internal.id
-    ssh_external  = aws_security_group.ssh_external.id
+    http_external     = aws_security_group.http_external.id
+    http_internal     = aws_security_group.http_internal.id
+    ssh_internal      = aws_security_group.ssh_internal.id
+    ssh_external      = aws_security_group.ssh_external.id
+    outbound_external = aws_security_group.outbound_external.id
   }
 }

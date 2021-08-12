@@ -25,6 +25,7 @@ module "application" {
   key_name             = var.key_name
   security_groups = [
     module.networking.security_groups.http_internal,
+    module.networking.security_groups.outbound_external,
   ]
   tags = merge(var.tags, { Name = local.name })
 }
